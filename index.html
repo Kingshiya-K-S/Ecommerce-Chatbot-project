@@ -1,0 +1,38 @@
+'''<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-commerce Chatbot</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    #chatbox { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; }
+    input, button { padding: 10px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Shopping Assistant</h1>
+  <div id="chatbox"></div>
+  <input type="text" id="userInput" placeholder="Ask me about a product...">
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById('userInput').value;
+      const response = await fetch('http://localhost:5000/api/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: input })
+      });
+      const data = await response.json();
+      const chatbox = document.getElementById('chatbox');
+      chatbox.innerHTML += `<div><b>You:</b> ${input}</div>`;
+      chatbox.innerHTML += `<div><b>Bot:</b> Found ${data.length} items</div>`;
+      data.forEach(item => {
+        chatbox.innerHTML += `<div>- ${item[0]} | ${item[1]} | Rs.${item[2]}</div>`;
+      });
+      document.getElementById('userInput').value = '';
+    }
+  </script>
+</body>
+</html>'''
